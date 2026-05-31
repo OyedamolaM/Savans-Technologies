@@ -165,12 +165,7 @@ function FloatingWhatsApp() {
       onClick={() => trackEvent("whatsapp_float_click", { location: "floating_button" })}
       className="fixed bottom-5 right-5 z-50 inline-flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_45px_rgba(37,211,102,0.35)] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 focus:ring-offset-background sm:bottom-6 sm:right-6"
     >
-      <svg
-        className="size-8"
-        viewBox="0 0 32 32"
-        fill="currentColor"
-        aria-hidden="true"
-      >
+      <svg className="size-8" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
         <path d="M16.04 3C8.86 3 3.02 8.84 3.02 16.02c0 2.32.62 4.58 1.8 6.56L3 29l6.6-1.74a12.9 12.9 0 0 0 6.44 1.72c7.18 0 13.02-5.84 13.02-13.02C29.06 8.82 23.22 3 16.04 3Zm0 23.64c-2.06 0-4.06-.56-5.82-1.62l-.42-.24-3.9 1.02 1.04-3.78-.28-.44a10.58 10.58 0 0 1-1.6-5.56c0-6.06 4.92-10.98 10.98-10.98s10.98 4.92 10.98 10.98-4.92 10.62-10.98 10.62Zm6.02-8.2c-.34-.16-1.98-.98-2.28-1.08-.3-.12-.52-.16-.74.16-.22.34-.86 1.08-1.06 1.3-.2.22-.38.24-.72.08-.34-.16-1.42-.52-2.7-1.66-1-.9-1.68-2-1.88-2.34-.2-.34-.02-.52.14-.68.16-.14.34-.38.5-.56.16-.2.22-.34.34-.56.12-.22.06-.42-.02-.58-.08-.16-.74-1.78-1.02-2.44-.26-.64-.54-.54-.74-.56h-.62c-.22 0-.58.08-.88.42-.3.34-1.16 1.14-1.16 2.76s1.18 3.2 1.34 3.42c.16.22 2.32 3.54 5.62 4.96.78.34 1.4.54 1.88.7.8.26 1.52.22 2.08.14.64-.1 1.98-.8 2.26-1.58.28-.78.28-1.44.2-1.58-.08-.14-.3-.22-.62-.38Z" />
       </svg>
     </a>
