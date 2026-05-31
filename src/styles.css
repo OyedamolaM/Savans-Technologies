@@ -158,6 +158,17 @@
 }
 .animate-fade-up { animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
+@keyframes project-image-cycle {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.project-image-cycle {
+  opacity: 0;
+  animation: project-image-cycle 7s ease-in-out infinite;
+}
+
 @layer base {
   * { border-color: var(--color-border); }
   html { scroll-behavior: smooth; }

@@ -1,22 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  ArrowUpRight, Check, Menu, X, Plus, Minus,
-  Globe, ShoppingCart, Layers, Package, Settings, Wrench,
-  MessageCircle, Phone, Mail, MapPin, ExternalLink,
+  ArrowUpRight,
+  Check,
+  Menu,
+  X,
+  Plus,
+  Minus,
+  Globe,
+  ShoppingCart,
+  Layers,
+  Package,
+  Settings,
+  Wrench,
+  MessageCircle,
+  Phone,
+  Mail,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { ContactForm } from "@/components/ContactForm";
 import {
-  NAV_LINKS, SERVICES, PROJECTS, PRICING, PROCESS, FAQS, TESTIMONIALS, CONTACT,
+  NAV_LINKS,
+  SERVICES,
+  PROJECTS,
+  PRICING,
+  PROCESS,
+  FAQS,
+  TESTIMONIALS,
+  CONTACT,
+  SOCIAL_LINKS,
 } from "@/lib/site-data";
 
 const ICONS = { Globe, ShoppingCart, Layers, Package, Settings, Wrench } as const;
 
-const SITE_TITLE = "Savans Technologies | Web Development, E-commerce & SaaS Solutions for Nigerian Businesses";
-const SITE_DESC = "Custom website development, e-commerce platforms, web apps, and inventory systems for businesses in Nigeria. Fast, affordable, results-driven.";
+const SITE_TITLE =
+  "Savans Technologies | Web Development, E-commerce & SaaS Solutions for Nigerian Businesses";
+const SITE_DESC =
+  "Custom website development, e-commerce platforms, web apps, and inventory systems for businesses in Nigeria. Fast, affordable, results-driven.";
 const SITE_URL = "https://savanstech.com";
 
 export const Route = createFileRoute("/")({
@@ -24,15 +48,29 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: SITE_TITLE },
       { name: "description", content: SITE_DESC },
-      { name: "keywords", content: "web development Nigeria, e-commerce development Lagos, custom web applications, inventory management system, business automation" },
+      {
+        name: "keywords",
+        content:
+          "web development Nigeria, e-commerce development Lagos, custom web applications, inventory management system, business automation",
+      },
       { name: "author", content: "Savans Technologies" },
-      { property: "og:title", content: "Savans Technologies — Digital Solutions for Nigerian Businesses" },
-      { property: "og:description", content: "We build websites, e-commerce stores, web apps, and automation systems that help Nigerian businesses grow online." },
+      {
+        property: "og:title",
+        content: "Savans Technologies — Digital Solutions for Nigerian Businesses",
+      },
+      {
+        property: "og:description",
+        content:
+          "We build websites, e-commerce stores, web apps, and automation systems that help Nigerian businesses grow online.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL },
       { property: "og:site_name", content: "Savans Technologies" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Savans Technologies — Digital Solutions for Nigerian Businesses" },
+      {
+        name: "twitter:title",
+        content: "Savans Technologies — Digital Solutions for Nigerian Businesses",
+      },
       { name: "twitter:description", content: SITE_DESC },
     ],
     links: [{ rel: "canonical", href: SITE_URL }],
@@ -55,7 +93,12 @@ export const Route = createFileRoute("/")({
               name: "Savans Technologies",
               url: SITE_URL,
               telephone: CONTACT.phone,
-              address: { "@type": "PostalAddress", addressLocality: "Lagos", addressRegion: "Lagos", addressCountry: "NG" },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Lagos",
+                addressRegion: "Lagos",
+                addressCountry: "NG",
+              },
               areaServed: "NG",
               priceRange: "₦₦",
             },
@@ -116,22 +159,37 @@ function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 mt-4">
         <div className="glass-strong rounded-full px-4 sm:px-5 py-2.5 flex items-center gap-3">
           <a href="#" className="flex items-center gap-2 font-display font-bold text-lg shrink-0">
-            <span className="size-7 rounded-md gradient-brand grid place-items-center text-background text-xs font-bold">S</span>
+            <span className="size-7 rounded-md gradient-brand grid place-items-center text-background text-xs font-bold">
+              S
+            </span>
             <span className="hidden sm:inline">Savans</span>
           </a>
           <nav className="hidden lg:flex items-center gap-1 ml-4 text-sm">
             {NAV_LINKS.map((l) => (
-              <a key={l.href} href={l.href} className="px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                key={l.href}
+                href={l.href}
+                className="px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-colors"
+              >
                 {l.label}
               </a>
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <a href={wa} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 rounded-full gradient-brand text-background text-sm font-medium px-4 py-2 hover:opacity-90 transition">
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full gradient-brand text-background text-sm font-medium px-4 py-2 hover:opacity-90 transition"
+            >
               Get Started <ArrowUpRight className="size-3.5" />
             </a>
-            <button onClick={() => setOpen((o) => !o)} className="lg:hidden size-9 rounded-full border border-border grid place-items-center" aria-label="Toggle menu">
+            <button
+              onClick={() => setOpen((o) => !o)}
+              className="lg:hidden size-9 rounded-full border border-border grid place-items-center"
+              aria-label="Toggle menu"
+            >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
           </div>
@@ -139,11 +197,21 @@ function Header() {
         {open && (
           <div className="lg:hidden mt-2 glass-strong rounded-2xl p-3 grid gap-1 text-sm">
             {NAV_LINKS.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg hover:bg-card text-muted-foreground hover:text-foreground">
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="px-3 py-2 rounded-lg hover:bg-card text-muted-foreground hover:text-foreground"
+              >
                 {l.label}
               </a>
             ))}
-            <a href={wa} className="px-3 py-2 rounded-lg text-center gradient-brand text-background font-medium mt-1">Get Started</a>
+            <a
+              href={wa}
+              className="px-3 py-2 rounded-lg text-center gradient-brand text-background font-medium mt-1"
+            >
+              Get Started
+            </a>
           </div>
         )}
       </div>
@@ -159,12 +227,12 @@ function Hero() {
       <div className="absolute inset-0 hero-aurora pointer-events-none" />
       <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 text-center">
-        <FadeIn>
+        {/* <FadeIn>
           <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs text-muted-foreground mb-6">
             <span className="size-1.5 rounded-full bg-[hsl(140,70%,55%)] animate-pulse" />
             Available for new projects · Lagos, Nigeria
           </div>
-        </FadeIn>
+        </FadeIn> */}
         <FadeIn delay={100}>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] max-w-4xl mx-auto">
             Transform your business with <span className="text-gradient">digital solutions</span>
@@ -172,15 +240,24 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={200}>
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Custom websites, e-commerce stores, web applications, and inventory systems for Nigerian businesses — built fast, designed to convert, engineered to scale.
+            Custom websites, e-commerce stores, web applications, and inventory systems for Nigerian
+            businesses — built fast, designed to convert, engineered to scale.
           </p>
         </FadeIn>
         <FadeIn delay={300}>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full gradient-brand text-background font-medium px-6 py-3 hover:opacity-90 transition">
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full gradient-brand text-background font-medium px-6 py-3 hover:opacity-90 transition"
+            >
               <MessageCircle className="size-4" /> Start Project
             </a>
-            <a href="#work" className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 backdrop-blur px-6 py-3 font-medium hover:bg-card transition">
+            <a
+              href="#work"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 backdrop-blur px-6 py-3 font-medium hover:bg-card transition"
+            >
               View Work <ArrowUpRight className="size-4" />
             </a>
           </div>
@@ -210,7 +287,11 @@ function Services() {
     <section id="services" className="py-24 relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Services" title="What we build" sub="End-to-end digital solutions that actually work." />
+          <SectionHeading
+            eyebrow="Services"
+            title="What we build"
+            sub="End-to-end digital solutions that actually work."
+          />
         </FadeIn>
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => {
@@ -233,7 +314,10 @@ function Services() {
                   </ul>
                   <div className="mt-6 pt-5 border-t border-border flex items-center justify-between">
                     <span className="text-sm font-semibold text-gradient">{s.price}</span>
-                    <a href="#contact" className="text-xs inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
+                    <a
+                      href="#contact"
+                      className="text-xs inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
+                    >
                       Learn more <ArrowUpRight className="size-3" />
                     </a>
                   </div>
@@ -253,33 +337,56 @@ function Work() {
     <section id="work" className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Recent Work" title="Projects we've shipped" sub="A glimpse of platforms we've built for clients across Nigeria." />
+          <SectionHeading
+            eyebrow="Recent Work"
+            title="Projects we've shipped"
+            sub="A glimpse of platforms we've built for clients across Nigeria."
+          />
         </FadeIn>
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PROJECTS.map((p, i) => (
-            <FadeIn key={p.url} delay={i * 50}>
-              <a
-                href={`https://${p.url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block glass rounded-2xl p-6 h-full hover:border-foreground/20 transition group"
-              >
-                <div className="aspect-[16/10] rounded-xl gradient-brand mb-5 grid place-items-center text-background/90 font-display text-2xl font-semibold relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/30" />
-                  <span className="relative">{p.name.split(" ").map((w) => w[0]).slice(0, 3).join("")}</span>
-                </div>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="font-semibold">{p.name}</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">{p.url}</p>
+          {PROJECTS.map((p, i) => {
+            const images = "images" in p && Array.isArray(p.images) ? p.images : [p.image];
+
+            return (
+              <FadeIn key={p.url} delay={i * 50}>
+                <a
+                  href={`https://${p.url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block glass rounded-2xl p-6 h-full hover:border-foreground/20 transition group"
+                >
+                  <div className="aspect-[16/10] rounded-xl bg-card mb-5 relative overflow-hidden border border-border">
+                    {images.map((image, imageIndex) => (
+                      <img
+                        key={image}
+                        src={image}
+                        alt={`${p.name} project screenshot ${imageIndex + 1}`}
+                        loading="lazy"
+                        style={
+                          images.length > 1
+                            ? { animationDelay: `${imageIndex * 3.5}s` }
+                            : undefined
+                        }
+                        className={`size-full object-cover transition duration-500 group-hover:scale-105 ${
+                          images.length > 1 ? "absolute inset-0 project-image-cycle" : ""
+                        }`}
+                      />
+                    ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
                   </div>
-                  <ExternalLink className="size-4 text-muted-foreground group-hover:text-foreground transition" />
-                </div>
-                <p className="text-sm text-muted-foreground mt-3">{p.type}</p>
-                <p className="text-xs mt-3 text-gradient font-medium">{p.result}</p>
-              </a>
-            </FadeIn>
-          ))}
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold">{p.name}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">{p.url}</p>
+                    </div>
+                    <ExternalLink className="size-4 text-muted-foreground group-hover:text-foreground transition" />
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-3">{p.type}</p>
+                  <p className="text-xs mt-3 text-gradient font-medium">{p.result}</p>
+                </a>
+              </FadeIn>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -292,7 +399,11 @@ function Process() {
     <section id="process" className="py-24 relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Process" title="How we work" sub="A clear, predictable path from idea to launch." />
+          <SectionHeading
+            eyebrow="Process"
+            title="How we work"
+            sub="A clear, predictable path from idea to launch."
+          />
         </FadeIn>
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {PROCESS.map((p, i) => (
@@ -319,7 +430,11 @@ function Testimonials() {
     <section className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Testimonials" title="Trusted by Nigerian businesses" sub="See what our clients say." />
+          <SectionHeading
+            eyebrow="Testimonials"
+            title="Trusted by Nigerian businesses"
+            sub="See what our clients say."
+          />
         </FadeIn>
         <div className="mt-14">
           <TestimonialsCarousel />
@@ -335,12 +450,18 @@ function Pricing() {
     <section id="pricing" className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Pricing" title="Transparent pricing" sub="Pick a tier — or talk to us for custom scope." />
+          <SectionHeading
+            eyebrow="Pricing"
+            title="Transparent pricing"
+            sub="Pick a tier — or talk to us for custom scope."
+          />
         </FadeIn>
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {PRICING.map((p, i) => (
             <FadeIn key={p.name} delay={i * 70}>
-              <div className={`relative h-full rounded-2xl p-6 flex flex-col ${p.popular ? "glass-strong border-foreground/30" : "glass"}`}>
+              <div
+                className={`relative h-full rounded-2xl p-6 flex flex-col ${p.popular ? "glass-strong border-foreground/30" : "glass"}`}
+              >
                 {p.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-wider font-semibold gradient-brand text-background px-3 py-1 rounded-full">
                     Most popular
@@ -359,14 +480,19 @@ function Pricing() {
                     </li>
                   ))}
                 </ul>
-                <a href="#contact" className={`mt-6 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition ${p.popular ? "gradient-brand text-background hover:opacity-90" : "border border-border hover:bg-card"}`}>
+                <a
+                  href="#contact"
+                  className={`mt-6 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition ${p.popular ? "gradient-brand text-background hover:opacity-90" : "border border-border hover:bg-card"}`}
+                >
                   {p.cta}
                 </a>
               </div>
             </FadeIn>
           ))}
         </div>
-        <p className="text-center text-xs text-muted-foreground mt-8">Custom pricing available · Milestone-based invoicing · Bank transfer & card accepted</p>
+        <p className="text-center text-xs text-muted-foreground mt-8">
+          Custom pricing available · Milestone-based invoicing · Bank transfer & card accepted
+        </p>
       </div>
     </section>
   );
@@ -379,7 +505,11 @@ function FAQ() {
     <section id="faq" className="py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="FAQ" title="Common questions" sub="Everything you need to know before reaching out." />
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Common questions"
+            sub="Everything you need to know before reaching out."
+          />
         </FadeIn>
         <div className="mt-12 grid gap-3">
           {FAQS.map((f, i) => {
@@ -393,10 +523,16 @@ function FAQ() {
                     aria-expanded={isOpen}
                   >
                     <span className="font-medium text-sm sm:text-base">{f.q}</span>
-                    {isOpen ? <Minus className="size-4 shrink-0" /> : <Plus className="size-4 shrink-0" />}
+                    {isOpen ? (
+                      <Minus className="size-4 shrink-0" />
+                    ) : (
+                      <Plus className="size-4 shrink-0" />
+                    )}
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{f.a}</div>
+                    <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                      {f.a}
+                    </div>
                   )}
                 </div>
               </FadeIn>
@@ -415,37 +551,60 @@ function Contact() {
     <section id="contact" className="py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <FadeIn>
-          <SectionHeading eyebrow="Contact" title="Ready to start?" sub="Tell us about your project. We usually reply within a few hours." />
+          <SectionHeading
+            eyebrow="Contact"
+            title="Ready to start?"
+            sub="Tell us about your project. We usually reply within a few hours."
+          />
         </FadeIn>
         <div className="mt-14 grid lg:grid-cols-[1fr_1.2fr] gap-8">
           <FadeIn>
             <div className="grid gap-3">
-              <a href={wa} target="_blank" rel="noopener noreferrer" className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition">
-                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background"><MessageCircle className="size-5" /></div>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition"
+              >
+                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background">
+                  <MessageCircle className="size-5" />
+                </div>
                 <div className="flex-1">
                   <div className="text-xs text-muted-foreground">WhatsApp</div>
                   <div className="font-medium text-sm">Chat with us now</div>
                 </div>
                 <ArrowUpRight className="size-4 text-muted-foreground" />
               </a>
-              <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition">
-                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background"><Phone className="size-5" /></div>
+              <a
+                href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition"
+              >
+                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background">
+                  <Phone className="size-5" />
+                </div>
                 <div className="flex-1">
                   <div className="text-xs text-muted-foreground">Call</div>
                   <div className="font-medium text-sm">{CONTACT.phone}</div>
                 </div>
               </a>
-              <a href={`mailto:${CONTACT.email}`} className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition">
-                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background"><Mail className="size-5" /></div>
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="glass rounded-2xl p-5 flex items-center gap-4 hover:border-foreground/20 transition"
+              >
+                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background">
+                  <Mail className="size-5" />
+                </div>
                 <div className="flex-1">
                   <div className="text-xs text-muted-foreground">Email</div>
                   <div className="font-medium text-sm">{CONTACT.email}</div>
                 </div>
               </a>
               <div className="glass rounded-2xl p-5 flex items-center gap-4">
-                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background"><MapPin className="size-5" /></div>
+                <div className="size-10 rounded-xl gradient-brand grid place-items-center text-background">
+                  <MapPin className="size-5" />
+                </div>
                 <div>
-                  <div className="text-xs text-muted-foreground">Based in</div>
+                  <div className="text-xs text-muted-foreground">Location</div>
                   <div className="font-medium text-sm">{CONTACT.location}</div>
                 </div>
               </div>
@@ -468,23 +627,38 @@ function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
           <div>
             <div className="flex items-center gap-2 font-display font-bold text-lg">
-              <span className="size-7 rounded-md gradient-brand grid place-items-center text-background text-xs font-bold">S</span>
+              <span className="size-7 rounded-md gradient-brand grid place-items-center text-background text-xs font-bold">
+                S
+              </span>
               Savans Technologies
             </div>
             <p className="text-muted-foreground mt-3 text-xs leading-relaxed">
-              Web engineering studio building websites, e-commerce, and SaaS for Nigerian businesses.
+              Web engineering studio building websites, e-commerce, and SaaS for Nigerian
+              businesses.
             </p>
           </div>
           <div>
             <h4 className="font-semibold mb-3">Services</h4>
             <ul className="space-y-2 text-muted-foreground">
-              {SERVICES.slice(0, 5).map((s) => <li key={s.title}><a href="#services" className="hover:text-foreground">{s.title}</a></li>)}
+              {SERVICES.slice(0, 5).map((s) => (
+                <li key={s.title}>
+                  <a href="#services" className="hover:text-foreground">
+                    {s.title}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-3">Links</h4>
             <ul className="space-y-2 text-muted-foreground">
-              {NAV_LINKS.map((l) => <li key={l.href}><a href={l.href} className="hover:text-foreground">{l.label}</a></li>)}
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} className="hover:text-foreground">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -493,15 +667,32 @@ function Footer() {
               <li>{CONTACT.email}</li>
               <li>{CONTACT.phone}</li>
               <li>{CONTACT.location}</li>
-              <li className="pt-2"><ThemeToggle /></li>
+              <li className="pt-2">
+                <ThemeToggle />
+              </li>
             </ul>
           </div>
         </div>
         <div className="border-t border-border mt-10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Savans Technologies. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Terms</a>
+            {SOCIAL_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a href="/privacy" className="hover:text-foreground">
+              Privacy
+            </a>
+            <a href="/terms" className="hover:text-foreground">
+              Terms
+            </a>
           </div>
         </div>
       </div>
@@ -513,7 +704,9 @@ function Footer() {
 function SectionHeading({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
   return (
     <div className="text-center max-w-2xl mx-auto">
-      <div className="text-xs uppercase tracking-[0.2em] text-gradient font-semibold">{eyebrow}</div>
+      <div className="text-xs uppercase tracking-[0.2em] text-gradient font-semibold">
+        {eyebrow}
+      </div>
       <h2 className="mt-3 text-3xl sm:text-5xl font-bold leading-tight">{title}</h2>
       <p className="mt-4 text-muted-foreground">{sub}</p>
     </div>
