@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-labelledby="title desc">
+  <title id="title">Savans Technologies</title>
+  <desc id="desc">Savans Technologies logo with ST icon</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7CFFB2"/>
+      <stop offset="0.5" stop-color="#A77BFF"/>
+      <stop offset="1" stop-color="#F05BC6"/>
+    </linearGradient>
+    <filter id="softGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="0 0 0 0 0.49 0 0 0 0 0.35 0 0 0 0 1 0 0 0 0.5 0"
+      />
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="32" cy="32" r="27" fill="url(#markGradient)" filter="url(#softGlow)"/>
+  <circle cx="32" cy="32" r="23" fill="#070817" opacity="0.92"/>
+  <text
+    x="32"
+    y="40"
+    fill="#F8FAFC"
+    font-family="Plus Jakarta Sans, Inter, Arial, sans-serif"
+    font-size="24"
+    font-weight="900"
+    letter-spacing="-1"
+    text-anchor="middle"
+  >ST</text>
+  <text
+    x="76"
+    y="30"
+    fill="#F8FAFC"
+    font-family="Plus Jakarta Sans, Inter, Arial, sans-serif"
+    font-size="18"
+    font-weight="800"
+    letter-spacing="0"
+  >Savans</text>
+  <text
+    x="76"
+    y="47"
+    fill="#B9F6D2"
+    font-family="Plus Jakarta Sans, Inter, Arial, sans-serif"
+    font-size="11"
+    font-weight="700"
+    letter-spacing="2.6"
+  >TECHNOLOGIES</text>
+</svg>

@@ -11,6 +11,9 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 
+const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN;
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -88,6 +91,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "icon",
+        href: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/favicon.svg",
+      },
+    ],
+    scripts: [
+      ...(gaMeasurementId
+        ? [
+            {
+              src: `https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`,
+              async: true,
+            },
+            {
+              children: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `,
+            },
+          ]
+        : []),
+      ...(plausibleDomain
+        ? [
+            {
+              src: "https://plausible.io/js/script.js",
+              defer: true,
+              "data-domain": plausibleDomain,
+            },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,

@@ -19,6 +19,8 @@ import process from "node:process";
 export function getServerConfig() {
   return {
     nodeEnv: process.env.NODE_ENV,
+    leadWebhookUrl: process.env.LEAD_WEBHOOK_URL,
+    leadWebhookToken: process.env.LEAD_WEBHOOK_TOKEN,
     // Add server-only values here, e.g.:
     //   databaseUrl: process.env.DATABASE_URL,
     //   stripeSecretKey: process.env.STRIPE_SECRET_KEY,

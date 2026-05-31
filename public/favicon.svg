@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Savans Technologies</title>
+  <desc id="desc">Savans Technologies ST favicon</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7CFFB2"/>
+      <stop offset="0.5" stop-color="#A77BFF"/>
+      <stop offset="1" stop-color="#F05BC6"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#070817"/>
+  <circle cx="32" cy="32" r="26" fill="url(#markGradient)"/>
+  <circle cx="32" cy="32" r="22" fill="#070817" opacity="0.92"/>
+  <text
+    x="32"
+    y="40"
+    fill="#F8FAFC"
+    font-family="Plus Jakarta Sans, Inter, Arial, sans-serif"
+    font-size="24"
+    font-weight="900"
+    letter-spacing="-1"
+    text-anchor="middle"
+  >ST</text>
+</svg>
