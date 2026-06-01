@@ -25,9 +25,7 @@ export const submitLead = createServerFn({ method: "POST" })
       method: "POST",
       headers: {
         "content-type": "application/json",
-        ...(config.leadWebhookToken
-          ? { authorization: `Bearer ${config.leadWebhookToken}` }
-          : {}),
+        ...(config.leadWebhookToken ? { authorization: `Bearer ${config.leadWebhookToken}` } : {}),
       },
       body: JSON.stringify({
         ...data,

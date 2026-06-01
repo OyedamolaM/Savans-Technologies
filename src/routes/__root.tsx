@@ -77,14 +77,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Savans Technologies" },
-      { name: "description", content: "Savans Technologies offers professional website and web application development services for businesses and individuals." },
+      {
+        name: "description",
+        content:
+          "Savans Technologies offers professional website and web application development services for businesses and individuals.",
+      },
       { name: "author", content: "Savans Technologies" },
       { property: "og:title", content: "Savans Technologies" },
-      { property: "og:description", content: "Savans Technologies offers professional website and web application development services for businesses and individuals." },
+      {
+        property: "og:description",
+        content:
+          "Savans Technologies offers professional website and web application development services for businesses and individuals.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Savans Technologies" },
-      { name: "twitter:description", content: "Savans Technologies offers professional website and web application development services for businesses and individuals." },
+      {
+        name: "twitter:description",
+        content:
+          "Savans Technologies offers professional website and web application development services for businesses and individuals.",
+      },
     ],
     links: [
       {

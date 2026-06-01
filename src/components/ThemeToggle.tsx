@@ -52,7 +52,9 @@ export function useTheme() {
     applyTheme(next);
     try {
       localStorage.setItem(STORAGE_KEY, next);
-    } catch {}
+    } catch {
+      // Ignore storage errors, for example private browsing restrictions.
+    }
     subscribers.forEach((subscriber) => subscriber(next));
   };
 
@@ -72,7 +74,9 @@ export function ThemeToggle() {
         onClick={() => toggle("vivid")}
         aria-pressed={theme === "vivid"}
         className={`inline-flex items-center gap-1 px-2 py-1.5 rounded-full font-medium transition-colors sm:gap-1.5 sm:px-2.5 ${
-          theme === "vivid" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+          theme === "vivid"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
         }`}
       >
         <Palette className="size-3 sm:size-3.5" />
@@ -83,7 +87,9 @@ export function ThemeToggle() {
         onClick={() => toggle("mono")}
         aria-pressed={theme === "mono"}
         className={`inline-flex items-center gap-1 px-2 py-1.5 rounded-full font-medium transition-colors sm:gap-1.5 sm:px-2.5 ${
-          theme === "mono" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+          theme === "mono"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
         }`}
       >
         <Square className="size-3 sm:size-3.5" />

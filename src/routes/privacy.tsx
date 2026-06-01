@@ -31,9 +31,7 @@ function PrivacyPage() {
         </Link>
 
         <div className="mt-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-gradient font-semibold">
-            Legal
-          </p>
+          <p className="text-xs uppercase tracking-[0.2em] text-gradient font-semibold">Legal</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-bold">Privacy Policy</h1>
           <p className="mt-4 text-sm text-muted-foreground">Last updated: May 31, 2026</p>
         </div>
@@ -42,26 +40,26 @@ function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground">Information We Collect</h2>
             <p className="mt-3">
-              When you contact Savans Technologies, request a quote, or submit a project
-              inquiry, we may collect your name, email address, phone number, business details,
-              project requirements, and any files or messages you choose to send us.
+              When you contact Savans Technologies, request a quote, or submit a project inquiry, we
+              may collect your name, email address, phone number, business details, project
+              requirements, and any files or messages you choose to send us.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground">How We Use Information</h2>
             <p className="mt-3">
-              We use your information to respond to inquiries, prepare proposals, deliver
-              services, provide support, improve our website, and communicate about active or
-              potential projects. We do not sell your personal information.
+              We use your information to respond to inquiries, prepare proposals, deliver services,
+              provide support, improve our website, and communicate about active or potential
+              projects. We do not sell your personal information.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground">Project And Client Data</h2>
             <p className="mt-3">
-              Any credentials, business records, customer data, or project materials shared with
-              us are treated as confidential and used only for the work you authorize. You remain
+              Any credentials, business records, customer data, or project materials shared with us
+              are treated as confidential and used only for the work you authorize. You remain
               responsible for ensuring you have the right to share any third-party data with us.
             </p>
           </section>
@@ -69,18 +67,18 @@ function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground">Cookies And Analytics</h2>
             <p className="mt-3">
-              Our website may use basic analytics, performance tools, or cookies to understand
-              site usage and improve the browsing experience. You can control cookies through
-              your browser settings.
+              Our website may use basic analytics, performance tools, or cookies to understand site
+              usage and improve the browsing experience. You can control cookies through your
+              browser settings.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground">Data Security</h2>
             <p className="mt-3">
-              We use reasonable technical and organizational measures to protect information.
-              No online transmission or storage method is completely secure, but we work to keep
-              your data protected and limit access to people who need it for service delivery.
+              We use reasonable technical and organizational measures to protect information. No
+              online transmission or storage method is completely secure, but we work to keep your
+              data protected and limit access to people who need it for service delivery.
             </p>
           </section>
 
@@ -88,8 +86,8 @@ function PrivacyPage() {
             <h2 className="text-xl font-semibold text-foreground">Your Rights</h2>
             <p className="mt-3">
               You may request access, correction, or deletion of your personal information by
-              contacting us. We may keep certain records where required for legal, tax, security,
-              or legitimate business purposes.
+              contacting us. We may keep certain records where required for legal, tax, security, or
+              legitimate business purposes.
             </p>
           </section>
 
