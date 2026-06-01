@@ -89,25 +89,25 @@
 
 /* === Mono — minimal black & white === */
 .theme-mono {
-  --background: oklch(0.1 0.006 155);
-  --foreground: oklch(0.98 0 0);
-  --muted: oklch(0.17 0.008 155);
-  --muted-foreground: oklch(0.68 0.012 155);
-  --card: oklch(0.14 0.006 155);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.14 0.006 155);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.98 0 0);
-  --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.18 0.01 155);
-  --secondary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.8 0.08 155);
-  --accent-foreground: oklch(0.1 0 0);
-  --border: oklch(0.82 0.025 155 / 11%);
-  --input: oklch(0.82 0.025 155 / 12%);
-  --ring: oklch(0.8 0.08 155);
-  --brand: oklch(0.94 0.03 155);
-  --brand-2: oklch(0.72 0.08 155);
+  --background: oklch(0.115 0.032 178);
+  --foreground: oklch(0.97 0.012 170);
+  --muted: oklch(0.2 0.035 178);
+  --muted-foreground: oklch(0.77 0.035 175);
+  --card: oklch(0.16 0.036 182);
+  --card-foreground: oklch(0.98 0.01 170);
+  --popover: oklch(0.15 0.034 182);
+  --popover-foreground: oklch(0.98 0.01 170);
+  --primary: oklch(0.78 0.15 166);
+  --primary-foreground: oklch(0.11 0.025 178);
+  --secondary: oklch(0.24 0.04 188);
+  --secondary-foreground: oklch(0.96 0.018 170);
+  --accent: oklch(0.73 0.14 196);
+  --accent-foreground: oklch(0.1 0.028 188);
+  --border: oklch(0.78 0.08 176 / 16%);
+  --input: oklch(0.78 0.08 176 / 18%);
+  --ring: oklch(0.78 0.15 166);
+  --brand: oklch(0.78 0.15 166);
+  --brand-2: oklch(0.72 0.14 198);
 }
 
 /* === Utilities === */
@@ -153,9 +153,9 @@
 }
 .theme-mono .hero-aurora {
   background:
-    radial-gradient(60% 50% at 15% 10%, oklch(0.82 0.08 155 / 10%), transparent 70%),
-    radial-gradient(50% 50% at 85% 30%, oklch(1 0 0 / 5%), transparent 70%),
-    radial-gradient(40% 45% at 50% 100%, oklch(0.72 0.08 155 / 7%), transparent 70%);
+    radial-gradient(60% 50% at 15% 10%, oklch(0.78 0.15 166 / 20%), transparent 70%),
+    radial-gradient(52% 50% at 88% 28%, oklch(0.72 0.14 198 / 16%), transparent 70%),
+    radial-gradient(44% 46% at 50% 100%, oklch(0.65 0.12 145 / 11%), transparent 70%);
 }
 
 .grid-bg {
