@@ -40,7 +40,7 @@ import {
 const ICONS = { Globe, ShoppingCart, Layers, Package, Settings, Wrench } as const;
 
 const SITE_TITLE =
-  "Savans Technologies | Web Development, E-commerce & SaaS Solutions for Nigerian Businesses";
+  "Savans Technologies | Web Development, E-commerce & SaaS Solutions for Businesses";
 const SITE_DESC =
   "Custom website development, e-commerce platforms, web apps, and inventory systems for businesses in Nigeria. Fast, affordable, results-driven.";
 const SITE_URL = "https://savanstech.com";
@@ -58,12 +58,12 @@ export const Route = createFileRoute("/")({
       { name: "author", content: "Savans Technologies" },
       {
         property: "og:title",
-        content: "Savans Technologies — Digital Solutions for Nigerian Businesses",
+        content: "Savans Technologies — Digital Solutions for Your Businesses",
       },
       {
         property: "og:description",
         content:
-          "We build websites, e-commerce stores, web apps, and automation systems that help Nigerian businesses grow online.",
+          "We build websites, e-commerce stores, web apps, and automation systems that help businesses grow online.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL },
@@ -71,7 +71,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "Savans Technologies — Digital Solutions for Nigerian Businesses",
+        content: "Savans Technologies — Digital Solutions for Your Businesses",
       },
       { name: "twitter:description", content: SITE_DESC },
     ],
@@ -266,7 +266,7 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={200}>
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Custom websites, E-commerce stores, web applications, and inventory systems for Nigerian
+            Custom websites, E-commerce stores, web applications, and inventory systems for
             businesses. Built fast, designed to convert, engineered to scale.
           </p>
         </FadeIn>
@@ -512,7 +512,7 @@ function Testimonials() {
         <FadeIn>
           <SectionHeading
             eyebrow="Testimonials"
-            title="Trusted by Nigerian businesses"
+            title="Trusted by real businesses"
             sub="See what our clients say."
           />
         </FadeIn>
@@ -739,8 +739,7 @@ function Footer() {
               />
             </div>
             <p className="text-muted-foreground mt-3 text-xs leading-relaxed">
-              Web engineering studio building websites, e-commerce, and SaaS for Nigerian
-              businesses.
+              Web engineering studio building websites, e-commerce, and SaaS for businesses.
             </p>
           </div>
           <div className="col-span-2 sm:col-span-1 lg:col-span-1">

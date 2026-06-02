@@ -173,7 +173,7 @@ export const PROJECTS = [
   {
     name: "Amos Pride",
     url: "amospride.com.ng",
-    type: "Personal portfolio for a Nigerian artist",
+    type: "Personal portfolio for an artist",
     result: "Professional Portfolio website",
     image: "/projects/AmosPride.png",
   },
