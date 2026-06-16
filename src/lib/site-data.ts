@@ -197,13 +197,13 @@ export const PROCESS = [
     step: "02",
     title: "Design",
     desc: "Here, we provide you with different custom design templates based on your project or choice.",
-    timeline: "1-2days",
+    timeline: "1-2 days",
   },
   {
     step: "03",
     title: "Build",
     desc: "Production grade code with modern stacks, secure authentication, and clean data models and provide progress updates while you give us feedback.",
-    timeline: "2days - 2weeks",
+    timeline: "2 days - 2 weeks",
   },
   {
     step: "04",
