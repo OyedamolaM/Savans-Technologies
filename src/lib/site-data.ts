@@ -203,7 +203,7 @@ export const PROCESS = [
     step: "03",
     title: "Build",
     desc: "Production grade code with modern stacks, secure authentication, and clean data models and provide progress updates while you give us feedback.",
-    timeline: "1-2 weeks",
+    timeline: "2days - 2weeks",
   },
   {
     step: "04",
