@@ -49,7 +49,7 @@ const solutions = [
   {
     icon: ShoppingCart,
     title: "Pharmacy e-commerce websites",
-    desc: "Product catalogs, prescription uploads, order requests, checkout, delivery options, and payment gateway integration.",
+    desc: "Product catalogs, prescription uploads, order requests, checkout, Automated delivery options, and Online payments integration.",
   },
   {
     icon: BellRing,
@@ -316,17 +316,13 @@ function Hero() {
 
       <div className="relative mx-auto flex max-w-[24rem] px-4 pb-16 pt-32 sm:max-w-7xl sm:px-6 sm:pb-20 sm:pt-40">
         <div className="max-w-[22rem] sm:max-w-3xl">
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#B9F6D2] backdrop-blur">
-            <Pill className="size-3.5" />
-            Pharmacist-led digital systems
-          </p>
-          <h1 className="mt-6 max-w-[22rem] text-3xl font-extrabold leading-[1.08] tracking-normal text-white sm:max-w-none sm:text-6xl lg:text-7xl">
-            Pharmacy Digital Growth Systems
+          <h1 className="mt-6 max-w-[22rem] text-center text-3xl font-extrabold leading-[1.08] tracking-normal text-white sm:max-w-none sm:text-6xl lg:text-7xl lg:text-left">
+            Run Your Pharmacy Digitally With Savans
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
-            Help customers find your pharmacy online, browse products, request refills, receive
-            reminders, pay easily, and keep coming back without depending only on your physical
-            store or social media pages.
+
+          <p className="mt-6 max-w-2xl text-center text-base leading-8 text-white/78 sm:text-lg lg:text-left">
+            Ecommerce Websites • Pharmacy Automations • Telepharmacy • Inventory Management •
+            Customer Retentions
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -337,7 +333,7 @@ function Hero() {
               onClick={() => trackEvent("pharmacy_whatsapp_click", { location: "hero_primary" })}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-semibold text-white transition hover:brightness-110 sm:w-auto"
             >
-              Discuss my pharmacy <MessageCircle className="size-5" />
+              WhatsApp <MessageCircle className="size-5" />
             </a>
             <a
               href="#solutions"
@@ -350,7 +346,7 @@ function Hero() {
           <div className="mt-10 grid max-w-2xl grid-cols-1 gap-4 border-t border-white/15 pt-6 text-sm text-white/72 sm:grid-cols-3">
             <div>
               <span className="block text-lg font-bold text-white">E-commerce</span>
-              Online product ordering
+              Online Pharmacy
             </div>
             <div>
               <span className="block text-lg font-bold text-white">Refills</span>
@@ -358,7 +354,7 @@ function Hero() {
             </div>
             <div>
               <span className="block text-lg font-bold text-white">Operations</span>
-              Stock and reports
+              Inventory, Reports, Staffing
             </div>
           </div>
         </div>
@@ -375,13 +371,10 @@ function Opportunity() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gradient">
             The opportunity
           </p>
-          <h2 className="mt-3 text-3xl font-bold leading-tight sm:text-5xl">
-            Your customers already expect a digital pharmacy experience.
-          </h2>
           <p className="mt-5 text-base leading-8 text-muted-foreground">
-            Today, customers want to search online, request refills remotely, receive medication
-            reminders, pay conveniently, and interact with your pharmacy without waiting until they
-            walk through the door.
+            Your customers already expect a digital pharmacy experience. Today, customers no longer
+            wait to visit your pharmacy, they expect digital access to products, refills, reminders,
+            and payments.
           </p>
         </div>
 
@@ -413,9 +406,6 @@ function Solutions() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gradient">
             What we build
           </p>
-          <h2 className="mt-3 text-3xl font-bold leading-tight sm:text-5xl">
-            Digital systems that increase sales and make pharmacy operations easier.
-          </h2>
         </FadeIn>
 
         <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
