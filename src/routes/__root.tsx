@@ -110,8 +110,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: "image/svg+xml",
       },
       {
+        rel: "icon",
+        href: "/savans-logo-whatsapp-profile.png",
+        type: "image/png",
+        sizes: "640x640",
+      },
+      {
         rel: "apple-touch-icon",
-        href: "/favicon.svg",
+        href: "/savans-logo-whatsapp-profile.png",
       },
     ],
     scripts: [
