@@ -474,7 +474,7 @@ function Proof() {
               onClick={() => trackEvent("pharmacy_whatsapp_click", { location: "proof" })}
               className="inline-flex items-center justify-center gap-2 rounded-full gradient-brand px-6 py-3 font-semibold text-background transition hover:opacity-90"
             >
-              Talk to a pharmacist-builder <ArrowUpRight className="size-5" />
+              Talk to a Pharmacist <ArrowUpRight className="size-5" />
             </a>
             <a
               href="/#work"
