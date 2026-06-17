@@ -158,7 +158,7 @@ export const PROJECTS = [
   },
   {
     name: "PSN Ondo Membership Dashboard",
-    url: "dashboard.psnondo.org",
+    url: "psnondo.org/dashboard",
     type: "Member management and payments dashboard",
     result: "Simplified subscriptions, records, and member administration",
     image: "/projects/PSNONDOPORTAL.png",
