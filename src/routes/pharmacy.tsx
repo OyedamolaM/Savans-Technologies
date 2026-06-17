@@ -321,8 +321,8 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-center text-base leading-8 text-white/78 sm:text-lg lg:text-left">
-            Ecommerce Websites • Pharmacy Automations • Telepharmacy • Inventory Management •
-            Customer Retentions
+            Online Pharmacy • Pharmacy Automations • Telepharmacy • Inventory Management • Customer
+            Retentions
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
