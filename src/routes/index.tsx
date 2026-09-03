@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowUpRight,
   Check,
@@ -27,6 +27,7 @@ import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { ContactForm } from "@/components/ContactForm";
 import { PaymentDepositDialog } from "@/components/PaymentDepositDialog";
 import { trackEvent } from "@/lib/analytics";
+import { detectBrowserCurrency, formatPrice, type SupportedCurrency } from "@/lib/currency";
 import {
   NAV_LINKS,
   SERVICES,
@@ -136,16 +137,32 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const [currency, setCurrency] = useState<SupportedCurrency>(() => {
+    if (typeof navigator === "undefined") return "USD";
+    return detectBrowserCurrency();
+  });
+
+  useEffect(() => {
+    void fetch("/api/currency")
+      .then((response) => response.json() as Promise<{ currency?: SupportedCurrency }>)
+      .then((result) => {
+        if (result.currency === "NGN" || result.currency === "USD") {
+          setCurrency(result.currency);
+        }
+      })
+      .catch(() => undefined);
+  }, []);
+
   return (
     <div className="min-h-screen relative">
       <Header />
       <main>
         <Hero />
-        <Services />
+        <Services currency={currency} />
         <Work />
         <Process />
         <Testimonials />
-        <Pricing />
+        <Pricing currency={currency} />
         <FAQ />
         <Contact />
       </main>
@@ -203,9 +220,7 @@ function Header() {
           <div className="ml-auto flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
             <a
-              href={wa}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/login"
               onClick={() => trackEvent("start_project_click", { location: "header" })}
               className="hidden sm:inline-flex items-center gap-1.5 rounded-full gradient-brand text-background text-sm font-medium px-4 py-2 hover:opacity-90 transition"
             >
@@ -275,9 +290,7 @@ function Hero() {
         <FadeIn delay={300}>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a
-              href={wa}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#pricing"
               onClick={() => trackEvent("start_project_click", { location: "hero" })}
               className="inline-flex items-center gap-2 rounded-full gradient-brand text-background font-medium px-6 py-3 hover:opacity-90 transition"
             >
@@ -315,7 +328,16 @@ function Hero() {
 }
 
 /* =========================================== SERVICES */
-function Services() {
+const SERVICE_PRICES: Record<string, { ngn: number; usd: number; suffix?: string }> = {
+  "Corporate Websites": { ngn: 250_000, usd: 250 },
+  "E-Commerce Development": { ngn: 500_000, usd: 500 },
+  "Custom Web Applications": { ngn: 1_200_000, usd: 1_200 },
+  "Inventory Management Systems": { ngn: 10_000, usd: 10, suffix: "/month" },
+  "Business Automation Services": { ngn: 250_000, usd: 250 },
+  "Website Maintenance": { ngn: 25_000, usd: 25, suffix: "/month" },
+};
+
+function Services({ currency }: { currency: SupportedCurrency }) {
   const whatsappBase = `https://wa.me/${CONTACT.whatsapp}`;
 
   return (
@@ -331,6 +353,7 @@ function Services() {
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SERVICES.map((s, i) => {
             const Icon = ICONS[s.icon as keyof typeof ICONS];
+            const price = SERVICE_PRICES[s.title];
             const whatsappHref = `${whatsappBase}?text=${encodeURIComponent(
               `Hi Savans! I'd like to learn more about ${s.title}.`,
             )}`;
@@ -352,7 +375,14 @@ function Services() {
                     ))}
                   </ul>
                   <div className="mt-auto pt-5 border-t border-border flex items-center justify-between">
-                    <span className="text-sm font-semibold text-gradient">{s.price}</span>
+                    <span className="text-sm font-semibold text-gradient">
+                      {price
+                        ? formatPrice(currency === "NGN" ? price.ngn : price.usd, currency, {
+                            from: true,
+                            suffix: price.suffix,
+                          })
+                        : s.price}
+                    </span>
                     <a
                       href={whatsappHref}
                       target="_blank"
@@ -529,23 +559,16 @@ function Testimonials() {
 /* =========================================== PRICING */
 type DepositPlan = {
   name: string;
-  defaultAmount?: number;
 };
 
-function suggestedDeposit(price: string) {
-  const match = price.match(/([\d,]+(?:\.\d+)?)(m|k)?/i);
-  if (!match) return undefined;
+const PLAN_PRICES: Record<string, { ngn: number; usd: number; from?: boolean; plus?: boolean }> = {
+  Starter: { ngn: 150_000, usd: 150 },
+  Business: { ngn: 250_000, usd: 250 },
+  "E-commerce": { ngn: 500_000, usd: 500, from: true },
+  Professional: { ngn: 1_200_000, usd: 1_200, from: true, plus: true },
+};
 
-  let value = Number(match[1].replace(/,/g, ""));
-  const suffix = match[2]?.toLowerCase();
-  if (suffix === "m") value *= 1_000_000;
-  if (suffix === "k") value *= 1_000;
-
-  if (!Number.isFinite(value) || value <= 0) return undefined;
-  return Math.round(value / 2);
-}
-
-function Pricing() {
+function Pricing({ currency }: { currency: SupportedCurrency }) {
   const whatsappBase = `https://wa.me/${CONTACT.whatsapp}`;
   const [depositPlan, setDepositPlan] = useState<DepositPlan | null>(null);
 
@@ -561,10 +584,13 @@ function Pricing() {
         </FadeIn>
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {PRICING.map((p, i) => {
-            const displayPrice =
-              p.price === "Custom" || p.price.toLowerCase().startsWith("from")
-                ? p.price.replace(/^from\b/i, "From")
-                : `From ${p.price}`;
+            const price = PLAN_PRICES[p.name];
+            const displayPrice = price
+              ? formatPrice(currency === "NGN" ? price.ngn : price.usd, currency, {
+                  from: price.from ?? !price.plus,
+                  plus: price.plus,
+                })
+              : p.price;
             const whatsappHref = `${whatsappBase}?text=${encodeURIComponent(
               `Hi Savans! I'm interested in the ${p.name} plan.`,
             )}`;
@@ -592,38 +618,36 @@ function Pricing() {
                       </li>
                     ))}
                   </ul>
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() =>
-                      trackEvent("pricing_cta_click", {
-                        plan: p.name,
-                        price: displayPrice,
-                      })
-                    }
-                    className={`mt-6 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition ${p.popular ? "gradient-brand text-background hover:opacity-90" : "border border-border hover:bg-card"}`}
-                  >
-                    {p.cta}
-                  </a>
                   {p.name !== "Enterprise" && (
                     <button
                       type="button"
                       onClick={() => {
                         setDepositPlan({
                           name: p.name,
-                          defaultAmount: suggestedDeposit(p.price),
                         });
                         trackEvent("paystack_deposit_dialog_open", {
                           plan: p.name,
                           price: displayPrice,
                         });
                       }}
-                      className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-4 py-2 text-sm font-medium hover:bg-card transition"
+                      className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition ${p.popular ? "gradient-brand text-background hover:opacity-90" : "border border-border hover:bg-card"}`}
                     >
                       <CreditCard className="size-4" />
-                      Pay deposit
+                      {p.cta}
                     </button>
+                  )}
+                  {p.name === "Enterprise" && (
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() =>
+                        trackEvent("pricing_cta_click", { plan: p.name, price: displayPrice })
+                      }
+                      className="mt-6 inline-flex items-center justify-center rounded-full border border-border px-4 py-2.5 text-sm font-medium transition hover:bg-card"
+                    >
+                      {p.cta}
+                    </a>
                   )}
                 </div>
               </FadeIn>
@@ -636,7 +660,7 @@ function Pricing() {
             if (!open) setDepositPlan(null);
           }}
           plan={depositPlan?.name ?? ""}
-          defaultAmount={depositPlan?.defaultAmount}
+          currency={currency}
         />
         <p className="text-center text-xs text-muted-foreground mt-8">
           Custom pricing available · Milestone-based invoicing · Bank transfer & card accepted

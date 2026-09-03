@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { initializePaystackPayment } from "@/lib/api/paystack.functions";
 import { trackEvent } from "@/lib/analytics";
+import { NIGERIA_VAT_RATE, PRICE_NAIRA_PER_USD, type SupportedCurrency } from "@/lib/currency";
 import {
   Dialog,
   DialogContent,
@@ -15,68 +16,64 @@ type PaymentDepositDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   plan: string;
-  defaultAmount?: number;
+  currency: SupportedCurrency;
+};
+
+const PLAN_PRICES: Record<string, { ngn: number; usd: number }> = {
+  Starter: { ngn: 150_000, usd: 150 },
+  Business: { ngn: 250_000, usd: 250 },
+  "E-commerce": { ngn: 500_000, usd: 500 },
+  Professional: { ngn: 1_200_000, usd: 1_200 },
 };
 
 export function PaymentDepositDialog({
   open,
   onOpenChange,
   plan,
-  defaultAmount,
+  currency,
 }: PaymentDepositDialogProps) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
+  const [paymentOption, setPaymentOption] = useState<"full" | "deposit">("full");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const planPrice = PLAN_PRICES[plan];
+  const fullAmount = planPrice ? (currency === "NGN" ? planPrice.ngn : planPrice.usd) : 0;
+  const subtotal = paymentOption === "deposit" ? fullAmount / 2 : fullAmount;
+  const vatAmount = currency === "NGN" ? subtotal * NIGERIA_VAT_RATE : 0;
+  const totalAmount = subtotal + vatAmount;
+  const checkoutNaira = currency === "NGN" ? totalAmount : subtotal * PRICE_NAIRA_PER_USD;
 
   useEffect(() => {
     if (!open) return;
-
     setEmail("");
     setName("");
-    setAmount(defaultAmount ? String(defaultAmount) : "");
+    setPaymentOption("full");
     setError("");
     setSubmitting(false);
-  }, [open, defaultAmount]);
+  }, [open, plan]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const parsedAmount = Number(amount);
     const normalizedEmail = email.trim();
     const normalizedName = name.trim();
-
-    if (
-      !normalizedName ||
-      !normalizedEmail ||
-      !normalizedEmail.includes("@") ||
-      !parsedAmount ||
-      parsedAmount <= 0
-    ) {
-      setError("Enter your name, a valid email, and amount.");
+    if (!planPrice || !normalizedName || !normalizedEmail || !normalizedEmail.includes("@")) {
+      setError("Enter your name and a valid email address.");
       return;
     }
-
     setError("");
     setSubmitting(true);
     trackEvent("paystack_payment_start", {
       plan,
-      name: normalizedName,
-      amount: Math.round(parsedAmount),
+      paymentOption,
+      currency,
+      amount: subtotal,
       emailDomain: normalizedEmail.split("@")[1] ?? "unknown",
     });
-
     try {
       const result = await initializePaystackPayment({
-        data: {
-          email: normalizedEmail,
-          name: normalizedName,
-          amount: parsedAmount,
-          plan,
-        },
+        data: { email: normalizedEmail, name: normalizedName, plan, currency, paymentOption },
       });
-
       window.location.assign(result.authorizationUrl);
     } catch (initError) {
       console.error(initError);
@@ -88,17 +85,31 @@ export function PaymentDepositDialog({
   const inputClass =
     "w-full rounded-xl bg-card/60 border border-border px-4 py-3 text-sm outline-none focus:border-foreground/40 transition";
   const labelClass = "text-xs uppercase tracking-wider text-muted-foreground mb-1.5 block";
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Pay deposit</DialogTitle>
-          <DialogDescription>
-            Start a {plan ? `${plan} project` : "project"} payment with Paystack.
-          </DialogDescription>
+          <DialogTitle>Choose your payment</DialogTitle>
+          <DialogDescription>Pay in full, or start with a 50% project deposit.</DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-4">
+          <div className="grid grid-cols-2 gap-2">
+            <PaymentOption
+              checked={paymentOption === "full"}
+              label="Pay in full"
+              amount={formatAmount(fullAmount, currency)}
+              onClick={() => setPaymentOption("full")}
+            />
+            <PaymentOption
+              checked={paymentOption === "deposit"}
+              label="Pay 50% deposit"
+              amount={formatAmount(fullAmount / 2, currency)}
+              onClick={() => setPaymentOption("deposit")}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Deposits are fixed at 50% and cannot be reduced.
+          </p>
           <div>
             <label className={labelClass} htmlFor="paystack-name">
               Name
@@ -129,22 +140,27 @@ export function PaymentDepositDialog({
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
-          <div>
-            <label className={labelClass} htmlFor="paystack-amount">
-              Amount (NGN)
-            </label>
-            <input
-              id="paystack-amount"
-              type="number"
-              required
-              min={100}
-              step={100}
-              max={100_000_000}
-              className={inputClass}
-              placeholder="150000"
-              value={amount}
-              onChange={(event) => setAmount(event.target.value)}
-            />
+          <div className="rounded-xl border border-border bg-card/40 px-4 py-3 text-sm text-muted-foreground">
+            <div className="flex justify-between gap-4">
+              <span>{paymentOption === "full" ? "Full project price" : "50% deposit"}</span>
+              <span>{formatAmount(subtotal, currency)}</span>
+            </div>
+            {currency === "NGN" && (
+              <div className="mt-1 flex justify-between gap-4">
+                <span>VAT (7.5%)</span>
+                <span>{formatAmount(vatAmount, currency)}</span>
+              </div>
+            )}
+            {currency === "USD" && (
+              <div className="mt-1 flex justify-between gap-4">
+                <span>Paystack checkout charge</span>
+                <span>{formatAmount(checkoutNaira, "NGN")}</span>
+              </div>
+            )}
+            <div className="mt-2 flex justify-between gap-4 border-t border-border pt-2 font-medium text-foreground">
+              <span>Total due</span>
+              <span>{formatAmount(totalAmount, currency)}</span>
+            </div>
           </div>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <button
@@ -152,11 +168,43 @@ export function PaymentDepositDialog({
             disabled={submitting}
             className="mt-1 inline-flex items-center justify-center gap-2 rounded-full gradient-brand text-background font-medium px-5 py-2.5 text-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? "Starting payment..." : "Continue to Paystack"}
+            {submitting
+              ? "Starting payment..."
+              : `Continue to Paystack — ${formatAmount(totalAmount, currency)}`}
             {!submitting && <ArrowRight className="size-4" />}
           </button>
         </form>
       </DialogContent>
     </Dialog>
   );
+}
+
+function PaymentOption({
+  checked,
+  label,
+  amount,
+  onClick,
+}: {
+  checked: boolean;
+  label: string;
+  amount: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-xl border p-3 text-left text-sm transition ${checked ? "border-foreground bg-card" : "border-border bg-card/40 hover:bg-card"}`}
+    >
+      <span className="block font-medium">{label}</span>
+      <span className="mt-1 block text-xs text-muted-foreground">{amount}</span>
+    </button>
+  );
+}
+function formatAmount(amount: number, currency: SupportedCurrency) {
+  return new Intl.NumberFormat(currency === "NGN" ? "en-NG" : "en-US", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 2,
+  }).format(amount);
 }

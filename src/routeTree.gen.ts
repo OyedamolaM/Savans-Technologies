@@ -20,6 +20,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiCurrencyRouteImport } from './routes/api/currency'
 import { Route as ApiPaystackWebhookRouteImport } from './routes/api/paystack/webhook'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
@@ -77,6 +78,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCurrencyRoute = ApiCurrencyRouteImport.update({
+  id: '/api/currency',
+  path: '/api/currency',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPaystackWebhookRoute = ApiPaystackWebhookRouteImport.update({
   id: '/api/paystack/webhook',
   path: '/api/paystack/webhook',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/api/currency': typeof ApiCurrencyRoute
   '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/api/currency': typeof ApiCurrencyRoute
   '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/api/currency': typeof ApiCurrencyRoute
   '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/savansadminlogin'
     | '/terms'
     | '/verify-email'
+    | '/api/currency'
     | '/api/paystack/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/savansadminlogin'
     | '/terms'
     | '/verify-email'
+    | '/api/currency'
     | '/api/paystack/webhook'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/savansadminlogin'
     | '/terms'
     | '/verify-email'
+    | '/api/currency'
     | '/api/paystack/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   SavansadminloginRoute: typeof SavansadminloginRoute
   TermsRoute: typeof TermsRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
+  ApiCurrencyRoute: typeof ApiCurrencyRoute
   ApiPaystackWebhookRoute: typeof ApiPaystackWebhookRoute
 }
 
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/currency': {
+      id: '/api/currency'
+      path: '/api/currency'
+      fullPath: '/api/currency'
+      preLoaderRoute: typeof ApiCurrencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/paystack/webhook': {
       id: '/api/paystack/webhook'
       path: '/api/paystack/webhook'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   SavansadminloginRoute: SavansadminloginRoute,
   TermsRoute: TermsRoute,
   VerifyEmailRoute: VerifyEmailRoute,
+  ApiCurrencyRoute: ApiCurrencyRoute,
   ApiPaystackWebhookRoute: ApiPaystackWebhookRoute,
 }
 export const routeTree = rootRouteImport
