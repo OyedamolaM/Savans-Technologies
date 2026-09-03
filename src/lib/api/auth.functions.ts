@@ -81,7 +81,7 @@ export const registerCustomerUser = createServerFn({ method: "POST" })
       );
       if (emailResult.sent === false) {
         console.warn(
-          `Verification email was not sent. Dev link: ${created.user.email}?token=${created.verificationToken}`,
+          `Verification email was not sent: ${emailResult.reason ?? "unknown provider error"}. Dev link: /verify-email?token=${created.verificationToken}`,
         );
       }
     }
@@ -100,7 +100,9 @@ export const resendCustomerVerification = createServerFn({ method: "POST" })
 
     const emailResult = await sendVerificationEmail(data.email, token);
     if (emailResult.sent === false) {
-      console.warn(`Verification email was not sent. Dev link: ${data.email}?token=${token}`);
+      console.warn(
+        `Verification email was not sent: ${emailResult.reason ?? "unknown provider error"}. Dev link: /verify-email?token=${token}`,
+      );
     }
 
     return { ok: true as const };
@@ -121,7 +123,9 @@ export const sendPasswordResetLink = createServerFn({ method: "POST" })
 
     const emailResult = await sendPasswordResetEmail(data.email, token);
     if (emailResult.sent === false) {
-      console.warn(`Password reset email was not sent. Dev link: /reset-password?token=${token}`);
+      console.warn(
+        `Password reset email was not sent: ${emailResult.reason ?? "unknown provider error"}. Dev link: /reset-password?token=${token}`,
+      );
     }
 
     return { ok: true as const };

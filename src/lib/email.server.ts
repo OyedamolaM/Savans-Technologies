@@ -3,12 +3,12 @@ import nodemailer from "nodemailer";
 import { getServerConfig } from "./config.server";
 import type { StoredPayment } from "./payment-store.server";
 
-function formatNaira(amount: number) {
-  return new Intl.NumberFormat("en-NG", {
+function formatPaymentAmount(payment: StoredPayment) {
+  return new Intl.NumberFormat(payment.currency === "NGN" ? "en-NG" : "en-US", {
     style: "currency",
-    currency: "NGN",
+    currency: payment.currency,
     minimumFractionDigits: 2,
-  }).format(amount);
+  }).format(payment.amountNaira);
 }
 
 type EmailAddresses = {
@@ -142,8 +142,11 @@ async function sendWithBrevo(
           textContent: email.text,
           htmlContent: email.html,
         }),
-      }).then((response) => {
-        if (!response.ok) throw new Error(`Brevo request failed with status ${response.status}`);
+      }).then(async (response) => {
+        if (!response.ok) {
+          const detail = await response.text();
+          throw new Error(`Brevo request failed with status ${response.status}: ${detail}`);
+        }
         return response.json();
       }),
     ),
@@ -152,6 +155,9 @@ async function sendWithBrevo(
   return {
     sent: results.some((result) => result.status === "fulfilled"),
     results: results.map((result) => result.status),
+    errors: results
+      .filter((result): result is PromiseRejectedResult => result.status === "rejected")
+      .map((result) => String(result.reason)),
   };
 }
 
@@ -250,7 +256,7 @@ async function sendSingleEmail({
     const result = await sendWithBrevo(config.emailTransport.brevoApiKey, config.emailFrom, [
       { to, subject, text, html },
     ]);
-    return { sent: result.sent };
+    return { sent: result.sent, reason: result.errors?.join("; ") };
   }
 
   if (config.emailTransport.resendApiKey) {
@@ -268,7 +274,7 @@ function buildOwnerText(payment: StoredPayment) {
 
 Customer: ${payment.customerName ?? "Not provided"} (${payment.customerEmail ?? "No email"})
 Plan: ${payment.plan ?? "Not provided"}
-Amount: ${formatNaira(payment.amountNaira)}
+Amount: ${formatPaymentAmount(payment)}
 Reference: ${payment.reference}
 Paid at: ${payment.paidAt}
 `;
@@ -279,7 +285,7 @@ function buildOwnerHtml(payment: StoredPayment) {
 <h2>New Paystack payment</h2>
 <p><strong>Customer:</strong> ${escapeHtml(payment.customerName ?? "Not provided")} (${escapeHtml(payment.customerEmail ?? "No email")})</p>
 <p><strong>Plan:</strong> ${escapeHtml(payment.plan ?? "Not provided")}</p>
-<p><strong>Amount:</strong> ${formatNaira(payment.amountNaira)}</p>
+<p><strong>Amount:</strong> ${formatPaymentAmount(payment)}</p>
 <p><strong>Reference:</strong> ${escapeHtml(payment.reference)}</p>
 <p><strong>Paid at:</strong> ${escapeHtml(payment.paidAt)}</p>
 `;
@@ -288,7 +294,7 @@ function buildOwnerHtml(payment: StoredPayment) {
 function buildCustomerText(payment: StoredPayment) {
   return `Hi ${payment.customerName ?? "there"},
 
-Thanks for your payment of ${formatNaira(payment.amountNaira)}.
+Thanks for your payment of ${formatPaymentAmount(payment)}.
 Reference: ${payment.reference}
 
 We will be in touch soon about your project.
@@ -299,7 +305,7 @@ function buildCustomerHtml(payment: StoredPayment) {
   return `
 <h2>Payment received</h2>
 <p>Hi ${escapeHtml(payment.customerName ?? "there")},</p>
-<p>Thanks for your payment of ${formatNaira(payment.amountNaira)}.</p>
+<p>Thanks for your payment of ${formatPaymentAmount(payment)}.</p>
 <p>Reference: ${escapeHtml(payment.reference)}</p>
 <p>We will be in touch soon about your project.</p>
 `;

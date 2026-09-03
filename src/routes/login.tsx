@@ -2,7 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { LogIn, Mail, UserRoundPlus } from "lucide-react";
 
-import { loginUser, registerCustomerUser } from "@/lib/api/auth.functions";
+import {
+  loginUser,
+  registerCustomerUser,
+  resendCustomerVerification,
+} from "@/lib/api/auth.functions";
 import { setSessionToken } from "@/lib/session-client";
 
 export const Route = createFileRoute("/login")({
@@ -23,11 +27,35 @@ function CustomerLoginPage() {
   const [error, setError] = useState("");
   const [registeredEmail, setRegisteredEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
 
   const chooseMode = (nextMode: "login" | "register") => {
     setMode(nextMode);
     setError("");
     setRegisteredEmail("");
+    setResendMessage("");
+  };
+
+  const onResendVerification = async () => {
+    if (!registeredEmail) return;
+
+    setResending(true);
+    setResendMessage("");
+
+    try {
+      const result = await resendCustomerVerification({ data: { email: registeredEmail } });
+      setResendMessage(
+        result.ok
+          ? "A new verification link has been sent."
+          : "We could not send a new link. Try registering again or contact us.",
+      );
+    } catch (resendError) {
+      console.error(resendError);
+      setResendMessage("We could not send a new link. Please try again shortly.");
+    } finally {
+      setResending(false);
+    }
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +84,8 @@ function CustomerLoginPage() {
 
       if (!result.ok) {
         if ("reason" in result && result.reason === "unverified") {
-          setError("Verify your email before logging in.");
+          setRegisteredEmail(email.trim());
+          setError("");
         } else {
           setError("Invalid email or password.");
         }
@@ -94,6 +123,17 @@ function CustomerLoginPage() {
               <p className="mt-2 text-sm text-muted-foreground">
                 We sent a verification link to {registeredEmail}. Verify it, then log in.
               </p>
+              <button
+                type="button"
+                onClick={() => void onResendVerification()}
+                disabled={resending}
+                className="mt-5 text-sm font-medium text-foreground underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {resending ? "Sending..." : "Resend verification email"}
+              </button>
+              {resendMessage && (
+                <p className="mt-3 text-xs text-muted-foreground">{resendMessage}</p>
+              )}
             </div>
           ) : (
             <>
