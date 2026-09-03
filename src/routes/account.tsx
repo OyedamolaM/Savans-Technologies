@@ -147,7 +147,9 @@ function AccountPage() {
                         {new Date(payment.paidAt).toLocaleString()}
                       </td>
                       <td className="px-4 py-3">{payment.plan ?? "-"}</td>
-                      <td className="px-4 py-3">{formatNaira(payment.amountNaira)}</td>
+                      <td className="px-4 py-3">
+                        {formatMoney(payment.amountNaira, payment.currency)}
+                      </td>
                       <td className="px-4 py-3 text-xs text-muted-foreground break-all">
                         {payment.reference}
                       </td>
@@ -163,10 +165,10 @@ function AccountPage() {
   );
 }
 
-function formatNaira(amount: number) {
-  return new Intl.NumberFormat("en-NG", {
+function formatMoney(amount: number, currency: string) {
+  return new Intl.NumberFormat(currency === "NGN" ? "en-NG" : "en-US", {
     style: "currency",
-    currency: "NGN",
+    currency,
     minimumFractionDigits: 2,
   }).format(amount);
 }

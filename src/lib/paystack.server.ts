@@ -15,7 +15,8 @@ type PaystackInitializeResponse = {
 type PaystackInitializePayload = {
   name: string;
   email: string;
-  amountKobo: number;
+  amountSubunit: number;
+  currency: "NGN" | "USD";
   reference: string;
   callbackUrl: string;
   metadata: Record<string, unknown>;
@@ -37,8 +38,8 @@ export async function initializePaystackTransaction(payload: PaystackInitializeP
     body: JSON.stringify({
       email: payload.email,
       name: payload.name,
-      amount: payload.amountKobo,
-      currency: "NGN",
+      amount: payload.amountSubunit,
+      currency: payload.currency,
       reference: payload.reference,
       callback_url: payload.callbackUrl,
       metadata: payload.metadata,
