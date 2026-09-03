@@ -3,7 +3,11 @@ import { z } from "zod";
 
 import { getServerConfig } from "../config.server";
 import { getSession } from "../auth-store.server";
-import { listStoredPayments, listStoredPaymentsForEmail } from "../payment-store.server";
+import {
+  listPaymentAttempts,
+  listStoredPayments,
+  listStoredPaymentsForEmail,
+} from "../payment-store.server";
 
 export const listPaymentHistory = createServerFn({ method: "POST" })
   .inputValidator(z.object({ token: z.string().trim().min(1) }))
@@ -32,6 +36,7 @@ export const getAdminPaymentHistory = createServerFn({ method: "POST" })
     return {
       authed: true as const,
       payments: await listStoredPayments(),
+      attempts: await listPaymentAttempts(),
     };
   });
 

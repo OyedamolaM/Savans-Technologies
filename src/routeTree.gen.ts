@@ -16,6 +16,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PharmacyRouteImport } from './routes/pharmacy'
 import { Route as PaymentsRouteImport } from './routes/payments'
+import { Route as PaymentStatusRouteImport } from './routes/payment-status'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AccountRouteImport } from './routes/account'
@@ -58,6 +59,11 @@ const PaymentsRoute = PaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentStatusRoute = PaymentStatusRouteImport.update({
+  id: '/payment-status',
+  path: '/payment-status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/payment-status': typeof PaymentStatusRoute
   '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/payment-status': typeof PaymentStatusRoute
   '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/payment-status': typeof PaymentStatusRoute
   '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/payment-status'
     | '/payments'
     | '/pharmacy'
     | '/privacy'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/payment-status'
     | '/payments'
     | '/pharmacy'
     | '/privacy'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/payment-status'
     | '/payments'
     | '/pharmacy'
     | '/privacy'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
+  PaymentStatusRoute: typeof PaymentStatusRoute
   PaymentsRoute: typeof PaymentsRoute
   PharmacyRoute: typeof PharmacyRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment-status': {
+      id: '/payment-status'
+      path: '/payment-status'
+      fullPath: '/payment-status'
+      preLoaderRoute: typeof PaymentStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -300,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
+  PaymentStatusRoute: PaymentStatusRoute,
   PaymentsRoute: PaymentsRoute,
   PharmacyRoute: PharmacyRoute,
   PrivacyRoute: PrivacyRoute,

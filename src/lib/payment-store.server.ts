@@ -14,6 +14,28 @@ export type StoredPayment = {
   source: string;
 };
 
+export type PaymentAttemptStatus =
+  | "initiated"
+  | "pending"
+  | "success"
+  | "failed"
+  | "abandoned"
+  | "reversed";
+
+export type PaymentAttempt = {
+  reference: string;
+  status: PaymentAttemptStatus;
+  amountNaira: number;
+  currency: string;
+  customerName?: string;
+  customerEmail?: string;
+  plan?: string;
+  paymentType?: string;
+  failureReason?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type PaymentRow = {
   reference: string;
   status: "success";
@@ -26,6 +48,21 @@ type PaymentRow = {
   payment_type: string | null;
   paid_at: string;
   source: string;
+};
+
+type PaymentAttemptRow = {
+  reference: string;
+  status: PaymentAttemptStatus;
+  amount_kobo: number;
+  amount_naira: number;
+  currency: string;
+  customer_name: string | null;
+  customer_email: string | null;
+  plan: string | null;
+  payment_type: string | null;
+  failure_reason: string | null;
+  created_at: string;
+  updated_at: string;
 };
 
 type PaystackChargeSuccess = {
@@ -60,6 +97,61 @@ export async function listStoredPaymentsForEmail(email: string) {
     .order("paid_at", { ascending: false });
   if (error) throw new Error(`Could not list customer payments: ${error.message}`);
   return (data as PaymentRow[]).map(toStoredPayment);
+}
+
+export async function listPaymentAttempts() {
+  const { data, error } = await getSupabaseServerClient()
+    .from("payment_attempts")
+    .select("*")
+    .order("updated_at", { ascending: false });
+  if (error) throw new Error(`Could not list payment attempts: ${error.message}`);
+  return (data as PaymentAttemptRow[]).map(toPaymentAttempt);
+}
+
+export async function recordPaymentAttempt(
+  attempt: Omit<PaymentAttempt, "status" | "createdAt" | "updatedAt" | "failureReason"> & {
+    amountKobo: number;
+  },
+) {
+  const { error } = await getSupabaseServerClient()
+    .from("payment_attempts")
+    .upsert(
+      {
+        reference: attempt.reference,
+        status: "initiated",
+        amount_kobo: attempt.amountKobo,
+        amount_naira: attempt.amountNaira,
+        currency: attempt.currency,
+        customer_name: attempt.customerName ?? null,
+        customer_email: attempt.customerEmail?.toLowerCase() ?? null,
+        plan: attempt.plan ?? null,
+        payment_type: attempt.paymentType ?? null,
+      },
+      { onConflict: "reference", ignoreDuplicates: true },
+    );
+  if (error) throw new Error(`Could not record payment attempt: ${error.message}`);
+}
+
+export async function updatePaymentAttemptStatus(
+  reference: string,
+  status: Exclude<PaymentAttemptStatus, "initiated">,
+  failureReason?: string,
+) {
+  let query = getSupabaseServerClient()
+    .from("payment_attempts")
+    .update({
+      status,
+      failure_reason: failureReason ?? null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("reference", reference);
+
+  if (status !== "success") {
+    query = query.neq("status", "success");
+  }
+
+  const { error } = await query;
+  if (error) throw new Error(`Could not update payment attempt: ${error.message}`);
 }
 
 export async function recordPaystackChargeSuccess(event: Record<string, unknown>) {
@@ -100,6 +192,7 @@ export async function recordPaystackChargeSuccess(event: Record<string, unknown>
     .select()
     .maybeSingle<PaymentRow>();
   if (error) throw new Error(`Could not record payment: ${error.message}`);
+  await updatePaymentAttemptStatus(reference, "success");
   return { payment: row ? toStoredPayment(row) : payment, isNew: Boolean(row) };
 }
 
@@ -132,5 +225,21 @@ function toStoredPayment(row: PaymentRow): StoredPayment {
     paymentType: row.payment_type ?? undefined,
     paidAt: row.paid_at,
     source: row.source,
+  };
+}
+
+function toPaymentAttempt(row: PaymentAttemptRow): PaymentAttempt {
+  return {
+    reference: row.reference,
+    status: row.status,
+    amountNaira: row.amount_naira,
+    currency: row.currency,
+    customerName: row.customer_name ?? undefined,
+    customerEmail: row.customer_email ?? undefined,
+    plan: row.plan ?? undefined,
+    paymentType: row.payment_type ?? undefined,
+    failureReason: row.failure_reason ?? undefined,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   };
 }

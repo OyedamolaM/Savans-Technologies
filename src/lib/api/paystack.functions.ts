@@ -36,35 +36,55 @@ export const initializePaystackPayment = createServerFn({ method: "POST" })
     const vatAmount = data.currency === "NGN" ? chargeSubtotalNaira * NIGERIA_VAT_RATE : 0;
     const totalAmountNaira = Math.round((chargeSubtotalNaira + vatAmount) * 100) / 100;
     const amountSubunit = Math.round(totalAmountNaira * 100);
-    const callbackUrl = `${config.siteUrl ?? "https://savanstech.com"}/contact?payment=returned&reference=${encodeURIComponent(reference)}`;
+    const callbackUrl = `${config.siteUrl ?? "https://savanstech.com"}/payment-status?reference=${encodeURIComponent(reference)}`;
+    const { recordPaymentAttempt, updatePaymentAttemptStatus } =
+      await import("../payment-store.server");
 
-    const transaction = await initializePaystackTransaction({
-      email: data.email,
-      name: data.name,
-      amountSubunit,
-      currency: "NGN",
-      channels: data.currency === "USD" ? ["card"] : undefined,
+    await recordPaymentAttempt({
       reference,
-      callbackUrl,
-      metadata: {
-        source: "savans_website",
-        payment_type: data.paymentOption === "deposit" ? "project_deposit" : "project_full_payment",
-        charge_currency: "NGN",
-        display_currency: data.currency,
-        subtotal: chargeSubtotalNaira,
-        displayed_subtotal: displayedSubtotal,
-        vat_rate: data.currency === "NGN" ? 7.5 : 0,
-        vat_amount: vatAmount,
-        total_amount: totalAmountNaira,
-        usd_to_ngn_rate: data.currency === "USD" ? PRICE_NAIRA_PER_USD : undefined,
-        plan: data.plan,
-        note: data.note || undefined,
-        custom_fields: [
-          { display_name: "Name", variable_name: "name", value: data.name },
-          { display_name: "Plan", variable_name: "plan", value: data.plan },
-        ],
-      },
+      amountKobo: amountSubunit,
+      amountNaira: totalAmountNaira,
+      currency: "NGN",
+      customerName: data.name,
+      customerEmail: data.email,
+      plan: data.plan,
+      paymentType: data.paymentOption === "deposit" ? "project_deposit" : "project_full_payment",
     });
+
+    let transaction;
+    try {
+      transaction = await initializePaystackTransaction({
+        email: data.email,
+        name: data.name,
+        amountSubunit,
+        currency: "NGN",
+        channels: data.currency === "USD" ? ["card"] : undefined,
+        reference,
+        callbackUrl,
+        metadata: {
+          source: "savans_website",
+          payment_type:
+            data.paymentOption === "deposit" ? "project_deposit" : "project_full_payment",
+          charge_currency: "NGN",
+          display_currency: data.currency,
+          subtotal: chargeSubtotalNaira,
+          displayed_subtotal: displayedSubtotal,
+          vat_rate: data.currency === "NGN" ? 7.5 : 0,
+          vat_amount: vatAmount,
+          total_amount: totalAmountNaira,
+          usd_to_ngn_rate: data.currency === "USD" ? PRICE_NAIRA_PER_USD : undefined,
+          plan: data.plan,
+          note: data.note || undefined,
+          custom_fields: [
+            { display_name: "Name", variable_name: "name", value: data.name },
+            { display_name: "Plan", variable_name: "plan", value: data.plan },
+          ],
+        },
+      });
+    } catch (error) {
+      await updatePaymentAttemptStatus(reference, "failed", "Unable to start Paystack checkout");
+      throw error;
+    }
 
     return {
       authorizationUrl: transaction.authorization_url,

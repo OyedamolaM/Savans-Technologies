@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 import { initializePaystackPayment } from "@/lib/api/paystack.functions";
+import { markPaymentAttemptAbandoned } from "@/lib/api/payment-status.functions";
 import { trackEvent } from "@/lib/analytics";
 import { NIGERIA_VAT_RATE, PRICE_NAIRA_PER_USD, type SupportedCurrency } from "@/lib/currency";
 import {
@@ -53,6 +54,29 @@ export function PaymentDepositDialog({
     setSubmitting(false);
   }, [open, plan]);
 
+  useEffect(() => {
+    const resetAfterReturningToPage = () => {
+      if (!open) return;
+      const reference = window.sessionStorage.getItem("savans-pending-payment-reference");
+      if (reference) {
+        window.sessionStorage.removeItem("savans-pending-payment-reference");
+        void markPaymentAttemptAbandoned({ data: { reference } });
+      }
+      setSubmitting(false);
+      setError("Payment was not completed. You can try again when ready.");
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") resetAfterReturningToPage();
+    };
+
+    window.addEventListener("pageshow", resetAfterReturningToPage);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.removeEventListener("pageshow", resetAfterReturningToPage);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [open]);
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedEmail = email.trim();
@@ -74,6 +98,7 @@ export function PaymentDepositDialog({
       const result = await initializePaystackPayment({
         data: { email: normalizedEmail, name: normalizedName, plan, currency, paymentOption },
       });
+      window.sessionStorage.setItem("savans-pending-payment-reference", result.reference);
       window.location.assign(result.authorizationUrl);
     } catch (initError) {
       console.error(initError);

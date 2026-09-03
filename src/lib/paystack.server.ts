@@ -12,6 +12,15 @@ type PaystackInitializeResponse = {
   };
 };
 
+type PaystackVerificationResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    status: "success" | "failed" | "abandoned" | "ongoing" | "pending" | "processing" | "reversed";
+    gateway_response?: string | null;
+  };
+};
+
 type PaystackInitializePayload = {
   name: string;
   email: string;
@@ -56,6 +65,26 @@ export async function initializePaystackTransaction(payload: PaystackInitializeP
       message: json.message,
     });
     throw new Error(json.message ?? "Paystack transaction could not be initialized");
+  }
+
+  return json.data;
+}
+
+export async function verifyPaystackTransaction(reference: string) {
+  const config = getServerConfig();
+
+  if (!config.paystackSecretKey) {
+    throw new Error("PAYSTACK_SECRET_KEY is not configured");
+  }
+
+  const response = await fetch(
+    `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
+    { headers: { authorization: `Bearer ${config.paystackSecretKey}` } },
+  );
+  const json = (await response.json()) as Partial<PaystackVerificationResponse>;
+
+  if (!response.ok || !json.status || !json.data?.status) {
+    throw new Error(json.message ?? "Paystack transaction could not be verified");
   }
 
   return json.data;

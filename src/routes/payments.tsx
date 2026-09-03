@@ -17,6 +17,12 @@ type PaymentRecord = {
   paidAt: string;
 };
 
+type PaymentAttempt = Omit<PaymentRecord, "paidAt"> & {
+  status: "initiated" | "pending" | "success" | "failed" | "abandoned" | "reversed";
+  failureReason?: string;
+  updatedAt: string;
+};
+
 export const Route = createFileRoute("/payments")({
   head: () => ({
     meta: [
@@ -29,6 +35,7 @@ export const Route = createFileRoute("/payments")({
 
 function PaymentsPage() {
   const [payments, setPayments] = useState<PaymentRecord[]>([]);
+  const [attempts, setAttempts] = useState<PaymentAttempt[]>([]);
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
 
@@ -50,6 +57,7 @@ function PaymentsPage() {
 
       setAuthed(true);
       setPayments(result.payments);
+      setAttempts(result.attempts);
     } catch (loadError) {
       console.error(loadError);
     } finally {
@@ -110,7 +118,7 @@ function PaymentsPage() {
             </a>
             <h1 className="mt-3 text-2xl font-bold">Payment History</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Recorded Paystack payments from this app.
+              Successful Paystack payments and recent checkout attempts.
             </p>
           </div>
           <button
@@ -160,6 +168,58 @@ function PaymentsPage() {
         ) : (
           <p className="mt-8 text-sm text-muted-foreground">No successful payments recorded yet.</p>
         )}
+
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">Recent payment attempts</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Cancelled, failed, pending, and completed checkout attempts. Only successful payments
+            appear in the payment history above.
+          </p>
+          {attempts.length > 0 ? (
+            <div className="mt-4 overflow-x-auto glass rounded-2xl">
+              <table className="w-full min-w-[760px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border text-xs uppercase tracking-wider text-muted-foreground">
+                    <th className="px-4 py-3 font-medium">Updated</th>
+                    <th className="px-4 py-3 font-medium">Customer</th>
+                    <th className="px-4 py-3 font-medium">Status</th>
+                    <th className="px-4 py-3 font-medium">Amount</th>
+                    <th className="px-4 py-3 font-medium">Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attempts.map((attempt) => (
+                    <tr key={attempt.reference} className="border-b border-border last:border-0">
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        {new Date(attempt.updatedAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div>{attempt.customerName ?? "Unknown"}</div>
+                        <div className="text-xs text-muted-foreground">{attempt.customerEmail}</div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="capitalize">{attempt.status}</div>
+                        {attempt.failureReason && (
+                          <div className="mt-0.5 max-w-52 text-xs text-muted-foreground">
+                            {attempt.failureReason}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        {formatMoney(attempt.amountNaira, attempt.currency)}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground break-all">
+                        {attempt.reference}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-muted-foreground">No checkout attempts recorded yet.</p>
+          )}
+        </section>
       </div>
     </div>
   );
