@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   ArrowUpRight,
   Check,
+  CreditCard,
   Menu,
   X,
   Plus,
@@ -24,6 +25,7 @@ import { FadeIn } from "@/components/FadeIn";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { ContactForm } from "@/components/ContactForm";
+import { PaymentDepositDialog } from "@/components/PaymentDepositDialog";
 import { trackEvent } from "@/lib/analytics";
 import {
   NAV_LINKS,
@@ -525,8 +527,27 @@ function Testimonials() {
 }
 
 /* =========================================== PRICING */
+type DepositPlan = {
+  name: string;
+  defaultAmount?: number;
+};
+
+function suggestedDeposit(price: string) {
+  const match = price.match(/([\d,]+(?:\.\d+)?)(m|k)?/i);
+  if (!match) return undefined;
+
+  let value = Number(match[1].replace(/,/g, ""));
+  const suffix = match[2]?.toLowerCase();
+  if (suffix === "m") value *= 1_000_000;
+  if (suffix === "k") value *= 1_000;
+
+  if (!Number.isFinite(value) || value <= 0) return undefined;
+  return Math.round(value / 2);
+}
+
 function Pricing() {
   const whatsappBase = `https://wa.me/${CONTACT.whatsapp}`;
+  const [depositPlan, setDepositPlan] = useState<DepositPlan | null>(null);
 
   return (
     <section id="pricing" className="py-24">
@@ -585,11 +606,38 @@ function Pricing() {
                   >
                     {p.cta}
                   </a>
+                  {p.name !== "Enterprise" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDepositPlan({
+                          name: p.name,
+                          defaultAmount: suggestedDeposit(p.price),
+                        });
+                        trackEvent("paystack_deposit_dialog_open", {
+                          plan: p.name,
+                          price: displayPrice,
+                        });
+                      }}
+                      className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/40 px-4 py-2 text-sm font-medium hover:bg-card transition"
+                    >
+                      <CreditCard className="size-4" />
+                      Pay deposit
+                    </button>
+                  )}
                 </div>
               </FadeIn>
             );
           })}
         </div>
+        <PaymentDepositDialog
+          open={Boolean(depositPlan)}
+          onOpenChange={(open) => {
+            if (!open) setDepositPlan(null);
+          }}
+          plan={depositPlan?.name ?? ""}
+          defaultAmount={depositPlan?.defaultAmount}
+        />
         <p className="text-center text-xs text-muted-foreground mt-8">
           Custom pricing available · Milestone-based invoicing · Bank transfer & card accepted
         </p>
@@ -764,6 +812,16 @@ function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="/login" className="hover:text-foreground">
+                  Login
+                </a>
+              </li>
+              <li>
+                <a href="/account" className="hover:text-foreground">
+                  My Account
+                </a>
+              </li>
             </ul>
           </div>
           <div className="min-w-0">

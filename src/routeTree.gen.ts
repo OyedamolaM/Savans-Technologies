@@ -9,14 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SavansadminloginRouteImport } from './routes/savansadminlogin'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PharmacyRouteImport } from './routes/pharmacy'
+import { Route as PaymentsRouteImport } from './routes/payments'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPaystackWebhookRouteImport } from './routes/api/paystack/webhook'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavansadminloginRoute = SavansadminloginRouteImport.update({
+  id: '/savansadminlogin',
+  path: '/savansadminlogin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -29,53 +52,168 @@ const PharmacyRoute = PharmacyRouteImport.update({
   path: '/pharmacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPaystackWebhookRoute = ApiPaystackWebhookRouteImport.update({
+  id: '/api/paystack/webhook',
+  path: '/api/paystack/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/pharmacy': typeof PharmacyRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/savansadminlogin': typeof SavansadminloginRoute
   '/terms': typeof TermsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/api/paystack/webhook': typeof ApiPaystackWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pharmacy' | '/privacy' | '/terms'
+  fullPaths:
+    | '/'
+    | '/account'
+    | '/forgot-password'
+    | '/login'
+    | '/payments'
+    | '/pharmacy'
+    | '/privacy'
+    | '/reset-password'
+    | '/savansadminlogin'
+    | '/terms'
+    | '/verify-email'
+    | '/api/paystack/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pharmacy' | '/privacy' | '/terms'
-  id: '__root__' | '/' | '/pharmacy' | '/privacy' | '/terms'
+  to:
+    | '/'
+    | '/account'
+    | '/forgot-password'
+    | '/login'
+    | '/payments'
+    | '/pharmacy'
+    | '/privacy'
+    | '/reset-password'
+    | '/savansadminlogin'
+    | '/terms'
+    | '/verify-email'
+    | '/api/paystack/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/account'
+    | '/forgot-password'
+    | '/login'
+    | '/payments'
+    | '/pharmacy'
+    | '/privacy'
+    | '/reset-password'
+    | '/savansadminlogin'
+    | '/terms'
+    | '/verify-email'
+    | '/api/paystack/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  PaymentsRoute: typeof PaymentsRoute
   PharmacyRoute: typeof PharmacyRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SavansadminloginRoute: typeof SavansadminloginRoute
   TermsRoute: typeof TermsRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
+  ApiPaystackWebhookRoute: typeof ApiPaystackWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/savansadminlogin': {
+      id: '/savansadminlogin'
+      path: '/savansadminlogin'
+      fullPath: '/savansadminlogin'
+      preLoaderRoute: typeof SavansadminloginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -92,6 +230,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PharmacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -99,14 +265,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/paystack/webhook': {
+      id: '/api/paystack/webhook'
+      path: '/api/paystack/webhook'
+      fullPath: '/api/paystack/webhook'
+      preLoaderRoute: typeof ApiPaystackWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  PaymentsRoute: PaymentsRoute,
   PharmacyRoute: PharmacyRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SavansadminloginRoute: SavansadminloginRoute,
   TermsRoute: TermsRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
+  ApiPaystackWebhookRoute: ApiPaystackWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
