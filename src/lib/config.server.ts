@@ -19,8 +19,26 @@ import process from "node:process";
 export function getServerConfig() {
   return {
     nodeEnv: process.env.NODE_ENV,
+    siteUrl: process.env.SITE_URL ?? "https://savanstech.com",
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     leadWebhookUrl: process.env.LEAD_WEBHOOK_URL,
     leadWebhookToken: process.env.LEAD_WEBHOOK_TOKEN,
+    paystackSecretKey: process.env.PAYSTACK_SECRET_KEY,
+    adminToken: process.env.ADMIN_TOKEN,
+    adminEmail: process.env.ADMIN_EMAIL ?? "admin@savanstech.com",
+    adminPassword: process.env.ADMIN_PASSWORD,
+    notificationEmailTo: process.env.NOTIFICATION_EMAIL_TO ?? "oyedamola@savanstech.com",
+    emailFrom: process.env.EMAIL_FROM ?? "Savans Technologies <hello@savanstech.com>",
+    emailTransport: {
+      smtpHost: process.env.SMTP_HOST,
+      smtpPort: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined,
+      smtpUser: process.env.SMTP_USER,
+      smtpPass: process.env.SMTP_PASS,
+      smtpSecure: process.env.SMTP_SECURE === "true",
+      brevoApiKey: process.env.BREVO_API_KEY,
+      resendApiKey: process.env.RESEND_API_KEY,
+    },
     // Add server-only values here, e.g.:
     //   databaseUrl: process.env.DATABASE_URL,
     //   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
