@@ -43,6 +43,7 @@ export const initializePaystackPayment = createServerFn({ method: "POST" })
       name: data.name,
       amountSubunit,
       currency: "NGN",
+      channels: data.currency === "USD" ? ["card"] : undefined,
       reference,
       callbackUrl,
       metadata: {

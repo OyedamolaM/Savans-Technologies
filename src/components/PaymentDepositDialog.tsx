@@ -157,6 +157,9 @@ export function PaymentDepositDialog({
                 <span>{formatAmount(checkoutNaira, "NGN")}</span>
               </div>
             )}
+            {currency === "USD" && (
+              <p className="mt-2 text-xs">International checkout accepts card payments only.</p>
+            )}
             <div className="mt-2 flex justify-between gap-4 border-t border-border pt-2 font-medium text-foreground">
               <span>Total due</span>
               <span>{formatAmount(totalAmount, currency)}</span>

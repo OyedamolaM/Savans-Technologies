@@ -17,6 +17,7 @@ type PaystackInitializePayload = {
   email: string;
   amountSubunit: number;
   currency: "NGN" | "USD";
+  channels?: ["card"];
   reference: string;
   callbackUrl: string;
   metadata: Record<string, unknown>;
@@ -40,6 +41,7 @@ export async function initializePaystackTransaction(payload: PaystackInitializeP
       name: payload.name,
       amount: payload.amountSubunit,
       currency: payload.currency,
+      channels: payload.channels,
       reference: payload.reference,
       callback_url: payload.callbackUrl,
       metadata: payload.metadata,
